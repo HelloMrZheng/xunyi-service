@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+        <property name="hibernate.connection.password">cape</property>
+        <property name="hibernate.connection.url">jdbc:oracle:thin:@127.0.0.1:1521:ORCL</property>
+        <property name="hibernate.connection.username">system</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property> 
+        
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+        <property name="hbm2ddl.auto">update</property>
+        
+        <!-- 指定事务的隔离级别 -->
+        <property name="connection.isolation">2</property>
+        
+        <!-- 设定单次查询大小与增删改大小 -->
+        <property name="jdbc.fetch_size">100</property>
+        <property name="jdbc.batch_size">30</property>
+        
+        <!-- 配置管理 session 的方法 -->
+        <property name="hibernate.current_session_context_class">thread</property>
+        
+        
+        
+        <!-- 启用二级缓存 -->
+        <property name="cache.use_second_level_cache">true</property>
+        
+        <!-- 确定二级缓存的策略 ，可以在 hiber-project/etc/hibernate.properties中找到-->
+        <property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
+        <property name="hibernate.cache.use_query_cache">true</property>
+        
+        <!-- 确定对哪个类启用什么级别的缓存策略:mapping必须放在策略前边，即现有对象，才有对对象的策略 -->
+        <mapping resource="com/helpu/beans/Address.hbm.xml"/>
+        <class-cache usage="read-write" class="com.helpu.beans.Address"/>
+        
+    </session-factory>
+</hibernate-configuration>

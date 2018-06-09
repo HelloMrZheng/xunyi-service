@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+
+	<bean id="commonAddress" abstract="true" p:district="旬邑"></bean>
+	<bean id="address" class="com.helpu.beans.Address" parent="commonAddress"></bean>
+	<bean id="address2" class="com.helpu.beans.AddressFactoryBean"></bean>
+
+	<!-- scope="singleton" 时，IoC 容器初始化时实例化 scope="prototype" 时，调用 getBean 时实例化 -->
+	<bean id="user" class="com.helpu.beans.User"
+		p:address-ref="address" p:name="#{address.town}"
+		p:tel="#{2>1?'187':'136'}" depends-on="address" init-method="pre"
+		destroy-method="suf" scope="singleton"></bean>
+
+	<!-- 扫描注册 -->
+	<context:component-scan base-package="com.helpu.user"></context:component-scan>
+	<context:component-scan base-package="com.helpu.generic"></context:component-scan>
+	<context:component-scan base-package="com.helpu.log"></context:component-scan>
+	
+	<!-- bean 的后置处理器 -->
+	<bean class="com.helpu.beans.PostProcessor"></bean>
+	
+	<!-- AspectJ 起作用:自动为匹配的类生成代理对象 -->
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+
+	<!-- 配置数据源 -->
+	<context:property-placeholder location="classpath:configuration/db.properties" />
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="user" value="${user}"></property>
+		<property name="password" value="${password}"></property>
+		<property name="driverClass" value="${driverClass}"></property>
+		<property name="jdbcUrl" value="${jdbcUrl}"></property>
+	</bean>
+	
+	<!-- 配置 Spring 的 JdbcTemplate -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- 配置 Spring 的 NamedParameterJdbcTemplate -->
+	<bean  id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	
+	<!-- 配置 Spring 的 事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- 启用事务注解 -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+</beans>

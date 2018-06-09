@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-6-5 23:37:29 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.helpu.beans.Address" table="ADDRESS">
+        <id name="id" type="java.lang.String">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="district" type="java.lang.String">
+            <column name="DISTRICT" />
+        </property>
+        <property name="town" type="java.lang.String">
+            <column name="TOWN" />
+        </property>
+        <property name="village" type="java.lang.String">
+            <column name="VILLAGE" />
+        </property>
+        <property name="villageGroup" type="java.lang.String">
+            <column name="VILLAGEGROUP" />
+        </property>
+        <property name="no" type="java.lang.String">
+            <column name="NO" />
+        </property>
+        <property name="creationDate" type="timestamp">
+            <column name="CREATIONDATE" />
+        </property>
+    </class>
+</hibernate-mapping>
