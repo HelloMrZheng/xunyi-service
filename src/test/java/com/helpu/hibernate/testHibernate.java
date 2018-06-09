@@ -1,13 +1,11 @@
 package com.helpu.hibernate;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.criterion.Restrictions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
